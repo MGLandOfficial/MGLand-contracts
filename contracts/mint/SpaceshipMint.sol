@@ -4,42 +4,35 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "../nft/MGSpaceship.sol";
 
 contract SpaceshipMint is EIP712, Ownable, ReentrancyGuard {
-    using Counters for Counters.Counter;
     bool private _isMintPaused;
     address private _admin;
     address private _spaceship;
-    Counters.Counter private _tokenIdTracker;
-    mapping(uint256 => mapping(address => bool)) public isClaimed;
+    mapping(uint256 => mapping(address => uint256)) public isClaimed;
 
     constructor(address spaceship_) EIP712("MGSpaceship", "1.0.0") {
         _spaceship = spaceship_;
-        _tokenIdTracker = Counters.Counter({_value: 1});
-
     }
 
     function mint(
-        address nftAdd,
         uint256 timestamp,
         uint256 wlType,
         bytes calldata signature
     ) external nonReentrant {
-        require(!isClaimed[wlType][msg.sender], "Do not reclaim");
+        require(!_isMintPaused, "Mint pause");
+        require(isClaimed[wlType][msg.sender] == 0, "Do not reclaim");
         require(
             _verify(
-                _hash(nftAdd, msg.sender, wlType, timestamp),
+                _hash(_spaceship, msg.sender, wlType, timestamp),
                 signature
             ),
             "Invalid signature"
         );
-        isClaimed[wlType][msg.sender] = true;
-        uint256 tokenId = _tokenIdTracker.current();
-        MGSpaceship(_spaceship).mint(msg.sender, tokenId);
-        _tokenIdTracker.increment();
+        uint256 tokenId = MGSpaceship(_spaceship).mint(msg.sender);
+        isClaimed[wlType][msg.sender] = tokenId;
     }
 
     function _hash(
