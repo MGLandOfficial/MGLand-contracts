@@ -9,3 +9,4 @@ config.json
 cache
 artifacts
 hardhat.config.ts
+.DS_Store
