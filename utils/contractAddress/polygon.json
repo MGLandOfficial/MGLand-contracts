@@ -1,5 +1,7 @@
 {
     "address" :{
-        "pomg": "0xc7bA87AC288D8668EE6C955b6d89Fa23fF020A21"
+        "pomg": "0xc7bA87AC288D8668EE6C955b6d89Fa23fF020A21",
+        "MGL token": "0x5B2A531De2FE364224fb060af5733Fc996681F2d",
+        "pmgl": "0x78a3d8c8f4d81f9cfd349f483a2f34d2433449df"
     }
 }

@@ -2,6 +2,7 @@
     "address" :{
         "spaceship": "0x7B25aA2a1D75E20291B23D9D40a8826be87150a0",
         "spaceMint": "0xCc2BE2Ac1BA2eC21a6bfDDA432F4C6C3651eB458",
-        "land": "0xE75512aA3bec8f00434bBD6Ad8b0A3FbFF100AD6"
+        "land": "0xE75512aA3bec8f00434bBD6Ad8b0A3FbFF100AD6",
+        "recycle": "0x5a8917411C82Bf8651A577107F65F832086FaD36"
     }
 }
